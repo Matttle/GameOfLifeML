@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33214.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLifeML", "GameOfLifeML\GameOfLifeML.csproj", "{C22A4E15-C62A-4DE8-85BC-0620E7AB2D74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C22A4E15-C62A-4DE8-85BC-0620E7AB2D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C22A4E15-C62A-4DE8-85BC-0620E7AB2D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C22A4E15-C62A-4DE8-85BC-0620E7AB2D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C22A4E15-C62A-4DE8-85BC-0620E7AB2D74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54036216-42D7-484A-9CC1-97E61374C1A2}
+	EndGlobalSection
+EndGlobal
