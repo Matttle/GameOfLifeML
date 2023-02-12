@@ -14,6 +14,7 @@ namespace GameOfLifeML
     {
         // The universe array
         bool[,] universe = new bool[30, 30];
+        bool[,] nextUniverse = new bool[30, 30];
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -38,24 +39,34 @@ namespace GameOfLifeML
         // Calculate the next generation of cells
         private void NextGeneration()
         {
-            bool[,] nextUniverse = new bool[universe.GetLength(0), universe.GetLength(1)];
+            nextUniverse = new bool[universe.GetLength(0), universe.GetLength(1)];
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     int nCount = CountNeighbors(x, y);
 
-                    if (nCount == 3 || nCount == 2) // Game rules
+                    if (universe[x, y] == true) // Rules of the living cells
                     {
-                        if (universe[x, y] == true)
-                            nextUniverse[x, y] = true;
-                        else if (universe[x, y] == false && nCount == 3)
-                            nextUniverse[x, y] = true;
+                        switch (nCount) 
+                        {
+                            case 2:
+                                nextUniverse[x, y] = true;
+                                break;
+                            case 3:
+                                nextUniverse[x, y] = true;
+                                break;
+                            default:
+                                nextUniverse[x, y] = false;
+                                break;
+                        }
                     }
-                    else if (nCount > 3 || nCount < 2)
+                    else if (universe[x, y] == false) // Rules of dead cells
                     {
-                        if (universe[x, y] == true)
-                            nextUniverse[x, y] = false;
+                        if (nCount == 3)
+                        {
+                            nextUniverse[x, y] = true;
+                        }
                     }
                 }
             }
