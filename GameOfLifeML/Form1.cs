@@ -16,10 +16,13 @@ namespace GameOfLifeML
         bool[,] universe = new bool[30, 30];
         bool[,] nextUniverse = new bool[30, 30];
 
+        // Number of cells alive
+        private int cells;
+
         // Drawing colors
         Color gridColor = Color.Black;
         Color cellColor = Color.Gray;
-
+        Color brush = Color.Red;
         // The Timer class
         Timer timer = new Timer();
 
@@ -39,6 +42,7 @@ namespace GameOfLifeML
         // Calculate the next generation of cells
         private void NextGeneration()
         {
+            cells = 0;
             nextUniverse = new bool[universe.GetLength(0), universe.GetLength(1)];
             for (int y = 0; y < universe.GetLength(1); y++)
             {
@@ -73,18 +77,28 @@ namespace GameOfLifeML
             bool[,] universeCopy = universe; // Swapping the data so the original universe is changed all at once
             universe = nextUniverse;
             nextUniverse = universeCopy;
-            // Increment generation count
-            generations++;
+            // Count alive cells
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (universe[x, y] == true)
+                        cells++;
+                }
+            }
+                    // Increment generation count
+                    generations++;
 
             // Update status strip generations
-            toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            toolStripStatusLabelGenerations.Text = "Generations: " + generations.ToString();
+            AliveCells.Text = "Alive: " + cells.ToString();
+            graphicsPanel1.Invalidate();
         }
 
         // The event called by the timer every Interval milliseconds.
         private void Timer_Tick(object sender, EventArgs e)
         {
             NextGeneration();
-            graphicsPanel1.Invalidate();
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
@@ -95,11 +109,15 @@ namespace GameOfLifeML
             // CELL HEIGHT = WINDOW HEIGHT / NUMBER OF CELLS IN Y
             float cellHeight = (float)graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
-            // A Pen for drawing the grid lines (color, width)
+            // Pens for drawing the grid lines (color, width)
             Pen gridPen = new Pen(gridColor, 1);
+            Pen gridPenx10 = new Pen(gridColor, 2);
 
             // A Brush for filling living cells interiors (color)
             Brush cellBrush = new SolidBrush(cellColor);
+
+            // Brush for info text color
+            Brush newBrush = new SolidBrush(brush);
 
             // Iterate through the universe in the y, top to bottom
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -114,6 +132,12 @@ namespace GameOfLifeML
                     cellRect.Width = cellWidth;
                     cellRect.Height = cellHeight;
 
+                    RectangleF cellRectx10 = RectangleF.Empty;
+                    cellRectx10.X = x * cellWidth; 
+                    cellRectx10.Y = y * cellHeight;
+                    cellRectx10.Width = cellWidth * 10;
+                    cellRectx10.Height = cellHeight * 10;
+
                     // Fill the cell with a brush if alive
                     if (universe[x, y] == true)
                     {
@@ -122,10 +146,15 @@ namespace GameOfLifeML
 
                     // Outline the cell with a pen
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
+                    if (x % 10 == 0 && y % 10 == 0)
+                        e.Graphics.DrawRectangle(gridPenx10, cellRectx10.X, cellRectx10.Y, cellRectx10.Width, cellRectx10.Height);
                 }
             }
+            string info = $"Generations:{generations}\nAlive Cells: {cells}\nUniverse Size: {universe.GetLength(0)}x{universe.GetLength(1)}";
+            e.Graphics.DrawString(info, graphicsPanel1.Font, newBrush, new PointF(0, universe.GetLength(1)));
 
             // Cleaning up pens and brushes
+            newBrush.Dispose();
             gridPen.Dispose();
             cellBrush.Dispose();
         }
@@ -147,6 +176,13 @@ namespace GameOfLifeML
 
                 // Toggle the cell's state
                 universe[x, y] = !universe[x, y];
+
+                // Add/Remove cell
+                if (universe[x, y] == true)
+                    cells++;
+                else if (universe[x, y] == false)
+                    cells--;
+                AliveCells.Text = "Alive: " + cells.ToString();
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
@@ -200,23 +236,11 @@ namespace GameOfLifeML
         private void Next_Click(object sender, EventArgs e)
         {
             NextGeneration();
-            graphicsPanel1.Invalidate();
         }
 
         private void randomizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Random rnd = new Random();
-            for (int y = 0; y < universe.GetLength(1); y++)
-            {
-                for (int x = 0; x < universe.GetLength(0); x++)
-                {
-                    if (rnd.Next(0, 2) == 0)
-                        universe[x, y] = false;
-                    else
-                        universe[x, y] = true;
-                }
-            }
-            graphicsPanel1.Invalidate();
+
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -228,7 +252,75 @@ namespace GameOfLifeML
                     universe[x, y] = false;
                 }
             }
+            cells = 0;
+            AliveCells.Text = "Alive: " + cells.ToString();
             graphicsPanel1.Invalidate();
+        }
+
+        private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cells = 0;
+            Random rnd = new Random();
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (rnd.Next(0, 2) == 0)
+                        universe[x, y] = false;
+                    else
+                        universe[x, y] = true;
+                }
+            }
+            // Count alive cells (after it's changed)
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if (universe[x, y] == true)
+                        cells++;
+                }
+            }
+            AliveCells.Text = "Alive: " + cells.ToString();
+            graphicsPanel1.Invalidate();
+        }
+
+        private void backColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.Color = graphicsPanel1.BackColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                graphicsPanel1.BackColor = dlg.Color;
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void cellColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.Color = cellColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                cellColor = dlg.Color;
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void gridColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.Color = gridColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                gridColor = dlg.Color;
+                graphicsPanel1.Invalidate();
+            }
         }
     }
 }

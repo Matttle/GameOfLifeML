@@ -193,7 +193,7 @@
 </value>
   </data>
   <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>132, 17</value>
+    <value>193, 16</value>
   </metadata>
   <data name="newToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -316,11 +316,11 @@
   <data name="Next.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAABFSURBVDhPYxghQEFBoVReXt4ByiUdKCkp2QANeAmknaBC
-        pIMhYIiiouJ/EvFVqFbSAEXeoEgz0Mm2A6MZBChOiTQEDAwA3igpMZU3chgAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAABGSURBVDhPYxghQEFBoVReXt4ByiUdKCkp2cjIyLwE0k5Q
+        IdLBEDBEUVHxP4n4KlQraYAib1CkGehk24HRDAIUp0QaAgYGAFloKOl58L2ZAAAAAElFTkSuQmCC
 </value>
   </data>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>237, 17</value>
+    <value>409, 35</value>
   </metadata>
 </root>
